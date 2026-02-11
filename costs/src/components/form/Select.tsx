@@ -1,9 +1,14 @@
 import styles from './Select.module.css'
 
+interface OptionsProps {
+    id: number,
+    name: string
+}
+
 interface SelectProps {
     label?: string,
     name?: string,
-    options?: Array<object>, 
+    options?: Array<OptionsProps>,
     handleOnChange?: () => void
     value?: any
 }
@@ -19,6 +24,7 @@ export default function Select({ label, name, options, handleOnChange, value }: 
                 value={value}
             >
                 <option value="">Select an option</option>
+                {options && options.map(option => <option key={option.id} value={option.id}>{option.name}</option>)}
             </select>
         </div>
     )
