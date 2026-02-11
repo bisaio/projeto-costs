@@ -1,15 +1,11 @@
+import { OptionsProps } from '../../interfaces/OptionsProps'
 import styles from './Select.module.css'
-
-interface OptionsProps {
-    id: number,
-    name: string
-}
 
 interface SelectProps {
     label?: string,
     name?: string,
     options?: Array<OptionsProps>,
-    handleOnChange?: () => void
+    handleOnChange?: React.ChangeEventHandler<HTMLSelectElement>
     value?: any
 }
 
@@ -21,7 +17,7 @@ export default function Select({ label, name, options, handleOnChange, value }: 
                 id={name}
                 name={name}
                 onChange={handleOnChange}
-                value={value}
+                value={value || ''}
             >
                 <option value="">Select an option</option>
                 {options && options.map(option => <option key={option.id} value={option.id}>{option.name}</option>)}
