@@ -1,56 +1,5 @@
 {
-  "projects": [
-    {
-      "id": "dd01",
-      "name": "teste",
-      "budget": 1500,
-      "category": {
-        "id": 2,
-        "name": "Development"
-      },
-      "services": []
-    },
-    {
-      "id": "c6d3",
-      "name": "teste2",
-      "budget": 123,
-      "category": {
-        "id": 2,
-        "name": "Development"
-      },
-      "services": []
-    },
-    {
-      "id": "3cb8",
-      "name": "aa",
-      "budget": 323,
-      "category": {
-        "id": 2,
-        "name": "Development"
-      },
-      "services": []
-    },
-    {
-      "id": "04ac",
-      "name": "asda",
-      "budget": 3,
-      "category": {
-        "id": 2,
-        "name": "Development"
-      },
-      "services": []
-    },
-    {
-      "id": "2646",
-      "name": "teste",
-      "budget": 1321,
-      "category": {
-        "id": 1,
-        "name": "Infrastructure"
-      },
-      "services": []
-    }
-  ],
+  "projects": [],
   "categories": [
     {
       "id": "1",
