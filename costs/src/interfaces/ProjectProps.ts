@@ -1,8 +1,9 @@
-import { OptionsProps } from "./OptionsProps";
+import { CategoryProps } from "./CategoryProps";
 
 export interface ProjectProps {
+    id: number,
     name: string,
     budget: number,
-    category: OptionsProps,
+    category: CategoryProps,
     services: Array<string>,
 }

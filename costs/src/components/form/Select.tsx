@@ -1,10 +1,10 @@
-import { OptionsProps } from '../../interfaces/OptionsProps'
+import { CategoryProps } from '../../interfaces/CategoryProps'
 import styles from './Select.module.css'
 
 interface SelectProps {
     label?: string,
     name?: string,
-    options?: Array<OptionsProps>,
+    options?: Array<CategoryProps>,
     handleOnChange?: React.ChangeEventHandler<HTMLSelectElement>
     value?: any
 }
