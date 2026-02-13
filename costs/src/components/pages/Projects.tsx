@@ -6,10 +6,12 @@ import Container from "../layout/Container";
 import ProjectCard from "../project/ProjectCard";
 import { useEffect, useState } from "react";
 import { ProjectProps } from "../../interfaces/ProjectProps";
+import Loading from "../layout/Loading";
 
 export default function Projects() {
 
     const [projects, setProjects] = useState<ProjectProps[]>([]);
+    const [removeLoading, setRemoveLoading] = useState(false);
 
     useEffect(() => {
         fetch("http://localhost:5000/projects", {
@@ -19,7 +21,10 @@ export default function Projects() {
             }
         })
             .then(response => response.json())
-            .then(data => setProjects(data))
+            .then(data => {
+                setProjects(data)
+                setRemoveLoading(true)
+            })
             .catch(error => console.error(error))
     }, [])
 
@@ -28,7 +33,7 @@ export default function Projects() {
     if (location.state) message = location.state.message
 
     return (
-        <div className={styles.container}>
+        < div className={styles.container} >
             <div className={styles.title_container}>
                 <h1>My projects</h1>
                 <LinkButton link_to='/newproject' text='Create New Project' />
@@ -45,7 +50,11 @@ export default function Projects() {
                             category={project.category.name}
                             handleRemove={() => { }} />
                 )}
+                {!removeLoading && <Loading />}
+                {removeLoading && projects.length === 0 && (
+                    <p>You don't have any projects yet...</p>
+                )}
             </Container>
-        </div>
+        </div >
     )
 }
