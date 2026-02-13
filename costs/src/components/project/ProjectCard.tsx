@@ -7,10 +7,16 @@ interface ProjectCardProps {
     name: string,
     budget: number,
     category: string,
-    handleRemove?: () => void
+    handleRemove?: (id: number) => void
 }
 
 export default function ProjectCard({ id, name, budget, category, handleRemove }: ProjectCardProps) {
+
+    const remove = (event: React.SyntheticEvent) => {
+        event.preventDefault();
+        handleRemove && handleRemove(id)
+    }
+
     return (
         <div className={styles.card}>
             <h4>{name}</h4>
@@ -18,7 +24,7 @@ export default function ProjectCard({ id, name, budget, category, handleRemove }
             <p className={styles.category_text}><span className={`${styles[category.toLowerCase()]}`}></span>{category}</p>
             <div className={styles.card_actions}>
                 <Link to='/'><BsPencilFill color='#1383ce'/>Edit</Link>
-                <button><BsFillTrashFill color='#C42D2D'/>Remove</button>
+                <button onClick={remove}><BsFillTrashFill color='#C42D2D'/>Remove</button>
             </div>
         </div>
     )
