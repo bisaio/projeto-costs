@@ -23,7 +23,7 @@ export default function ProjectCard({ id, name, budget, category, handleRemove }
             <p><span>Budget: </span>{budget}</p>
             <p className={styles.category_text}><span className={`${styles[category.toLowerCase()]}`}></span>{category}</p>
             <div className={styles.card_actions}>
-                <Link to='/'><BsPencilFill color='#1383ce'/>Edit</Link>
+                <Link to={`/project/${id}`}><BsPencilFill color='#1383ce'/>Edit</Link>
                 <button onClick={remove}><BsFillTrashFill color='#C42D2D'/>Remove</button>
             </div>
         </div>

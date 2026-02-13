@@ -1,5 +1,16 @@
 {
-  "projects": [],
+  "projects": [
+    {
+      "id": "e6a7",
+      "name": "teste",
+      "budget": 1500,
+      "category": {
+        "id": 2,
+        "name": "Development"
+      },
+      "services": []
+    }
+  ],
   "categories": [
     {
       "id": "1",
