@@ -1,0 +1,51 @@
+.details {
+    padding: 2em;
+}
+
+.details h1,
+.details h2,
+.details p {
+    margin-bottom: 0.5em;
+}
+
+.details h1 {
+    background-color: #222;
+    color: #FFBB33;
+    padding: 0.4em;
+    border-radius: 0.4em;
+}
+
+.details span {
+    font-weight: bold;
+}
+
+.details_container,
+.service_form_conatiner {
+    border-bottom: 1px solid #7A7A7A;
+    margin-bottom: 1.2em;
+    padding-bottom: 1.2em;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
+.btn {
+    background-color: #222;
+    color: #FFF;
+    padding: 0.5em 1em;
+    text-decoration: none;
+    font-weight: bold;
+    transition: 0.5s;
+    border-radius: 0.5em;
+    cursor: pointer;
+    max-height: 40px;
+    border: none;
+}
+
+.btn:hover {
+    color: #FFBB33;
+}
+
+.info {
+    width: 100%;
+}
