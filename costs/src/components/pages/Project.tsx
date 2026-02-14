@@ -1,11 +1,13 @@
 import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
+import { v4 as uuidv4 } from 'uuid'
 import { ProjectProps } from '../../interfaces/ProjectProps'
 import Container from '../layout/Container'
 import Loading from '../layout/Loading'
-import styles from './Project.module.css'
-import ProjectForm from '../project/ProjectForm'
 import Message from '../layout/Message'
+import ProjectForm from '../project/ProjectForm'
+import ServiceForm from '../service/ServiceForm'
+import styles from './Project.module.css'
 
 export default function Project() {
     const { id } = useParams()
@@ -13,8 +15,7 @@ export default function Project() {
     const [project, setProject] = useState<ProjectProps>()
     const [showProjectForm, setShowProjectForm] = useState(false)
     const [showServiceForm, setShowServiceForm] = useState(false)
-    const [message, setMessage] = useState("")
-    const [messageType, setMessageType] = useState("")
+    const [message, setMessage] = useState<{ id: number, type: string, text: string } | null>(null)
 
     useEffect(() => {
         fetch(`http://localhost:5000/projects/${id}`, {
@@ -35,12 +36,38 @@ export default function Project() {
         setShowServiceForm(!showServiceForm)
     }
 
-    function editPost(project: ProjectProps) {
-        setMessage('')
+    function createService(project: ProjectProps) {
+        const last_service = project.services.at(-1);
 
+        if (!last_service) return false;
+
+        last_service.id = uuidv4()
+
+        const last_service_cost = Number(last_service.cost);
+        const new_cost = project.spent + last_service_cost
+
+        if (new_cost > project.budget) {
+            setMessage({ id: Date.now(), type: "error", text: "Budget has been exceeded, please check the service cost." })
+            project.services.pop()
+            return false;
+        }
+
+        project.spent = new_cost;
+
+        fetch(`http://localhost:5000/projects/${project.id}`, {
+            method: "PATCH",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(project)
+        }).then(response => response.json())
+        .then(data => setProject(data))
+        .catch(error => console.error(error))
+    }
+
+    function editPost(project: ProjectProps) {
         if (project.budget < project.spent) {
-            setMessageType("error")
-            setMessage("Budget can't be lower than what was spent in the project.")
+            setMessage({ id: Date.now(), type: "error", text: "Budget can't be lower than what was spent in the project." })
             return false;
         }
 
@@ -54,8 +81,7 @@ export default function Project() {
             .then(data => {
                 setProject(data);
                 setShowProjectForm(false);
-                setMessageType("success");
-                setMessage("Project updated.");
+                setMessage({ id: Date.now(), type: "success", text: "Project updated." })
             })
             .catch(error => console.error(error))
     }
@@ -65,7 +91,7 @@ export default function Project() {
             {project ? (
                 <div className={styles.details}>
                     <Container customClass='column'>
-                        {message && <Message type={messageType} text={message} />}
+                        {message && <Message key={message.id} type={message.type} text={message.text} />}
                         <div className={styles.details_container}>
                             <h1>{project.name}</h1>
                             <button className={styles.btn} onClick={toggleProjectForm}>{!showProjectForm ? "Edit project" : "Close"}</button>
@@ -91,7 +117,9 @@ export default function Project() {
                             <h2>Add a service</h2>
                             <button className={styles.btn} onClick={toggleServiceForm}>{!showServiceForm ? "Add service" : "Close"}</button>
                             <div className={styles.info}>
-                                {showServiceForm && <div>Form</div>}
+                                {showServiceForm && (
+                                    <ServiceForm handleSubmit={createService} btnText='Add service' projectData={project} />
+                                )}
                             </div>
                         </div>
                         <h2>Services</h2>

@@ -1,4 +1,5 @@
 import { CategoryProps } from "./CategoryProps";
+import { ServiceProps } from "./ServiceProps";
 
 export interface ProjectProps {
     id: number,
@@ -6,5 +7,5 @@ export interface ProjectProps {
     budget: number,
     spent: number,
     category: CategoryProps,
-    services: Array<string>,
+    services: Array<ServiceProps>,
 }
