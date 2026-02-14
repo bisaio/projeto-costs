@@ -12,6 +12,7 @@ export default function Project() {
 
     const [project, setProject] = useState<ProjectProps>()
     const [showProjectForm, setShowProjectForm] = useState(false)
+    const [showServiceForm, setShowServiceForm] = useState(false)
     const [message, setMessage] = useState("")
     const [messageType, setMessageType] = useState("")
 
@@ -30,7 +31,13 @@ export default function Project() {
         setShowProjectForm(!showProjectForm)
     }
 
+    function toggleServiceForm() {
+        setShowServiceForm(!showServiceForm)
+    }
+
     function editPost(project: ProjectProps) {
+        setMessage('')
+
         if (project.budget < project.spent) {
             setMessageType("error")
             setMessage("Budget can't be lower than what was spent in the project.")
@@ -65,10 +72,10 @@ export default function Project() {
                             {!showProjectForm ? (
                                 <div className={styles.info}>
                                     <p>
-                                        <span>Budget:</span>  ${project.budget}
+                                        <span>Budget:</span> ${project.budget}
                                     </p>
                                     <p>
-                                        <span>Spent:</span>  ${project.spent ? project.spent : 0}
+                                        <span>Spent:</span> ${project.spent}
                                     </p>
                                     <p>
                                         <span>Category:</span> {project.category.name}
@@ -80,6 +87,17 @@ export default function Project() {
                                 </div>
                             )}
                         </div>
+                        <div className={styles.service_form_container}>
+                            <h2>Add a service</h2>
+                            <button className={styles.btn} onClick={toggleServiceForm}>{!showServiceForm ? "Add service" : "Close"}</button>
+                            <div className={styles.info}>
+                                {showServiceForm && <div>Form</div>}
+                            </div>
+                        </div>
+                        <h2>Services</h2>
+                        <Container customClass="start">
+                            <p>services</p>
+                        </Container>
                     </Container>
                 </div>
             ) : (

@@ -15,6 +15,7 @@ export default function NewProject({ project }: NewProjectProps) {
         // initialize costs and services
         const new_project = {
             ...project,
+            spent: 0,
             services: []
         }
 
