@@ -4,12 +4,16 @@ import { ProjectProps } from '../../interfaces/ProjectProps'
 import Container from '../layout/Container'
 import Loading from '../layout/Loading'
 import styles from './Project.module.css'
+import ProjectForm from '../project/ProjectForm'
+import Message from '../layout/Message'
 
 export default function Project() {
     const { id } = useParams()
 
     const [project, setProject] = useState<ProjectProps>()
     const [showProjectForm, setShowProjectForm] = useState(false)
+    const [message, setMessage] = useState("")
+    const [messageType, setMessageType] = useState("")
 
     useEffect(() => {
         fetch(`http://localhost:5000/projects/${id}`, {
@@ -26,11 +30,35 @@ export default function Project() {
         setShowProjectForm(!showProjectForm)
     }
 
+    function editPost(project: ProjectProps) {
+        if (project.budget < project.spent) {
+            setMessageType("error")
+            setMessage("Budget can't be lower than what was spent in the project.")
+            return false;
+        }
+
+        fetch(`http://localhost:5000/projects/${project.id}`, {
+            method: "PATCH",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(project)
+        }).then(response => response.json())
+            .then(data => {
+                setProject(data);
+                setShowProjectForm(false);
+                setMessageType("success");
+                setMessage("Project updated.");
+            })
+            .catch(error => console.error(error))
+    }
+
     return (
         <>
             {project ? (
                 <div className={styles.details}>
                     <Container customClass='column'>
+                        {message && <Message type={messageType} text={message} />}
                         <div className={styles.details_container}>
                             <h1>{project.name}</h1>
                             <button className={styles.btn} onClick={toggleProjectForm}>{!showProjectForm ? "Edit project" : "Close"}</button>
@@ -48,7 +76,7 @@ export default function Project() {
                                 </div>
                             ) : (
                                 <div className={styles.info}>
-                                    <p>Form</p>
+                                    <ProjectForm handleSubmit={editPost} btnText='Edit' projectData={project} />
                                 </div>
                             )}
                         </div>

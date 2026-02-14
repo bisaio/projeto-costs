@@ -14,7 +14,7 @@ interface ProjectFormProps {
 export default function ProjectForm({ handleSubmit, projectData, btnText }: ProjectFormProps) {
 
     const [categories, setCategories] = useState([]);
-    const [project, setProject] = useState<ProjectProps>(projectData || {} as ProjectProps)
+    const [project, setProject] = useState<ProjectProps>(projectData || {})
 
     useEffect(() => {
         fetch("http://localhost:5000/categories", {
