@@ -95,8 +95,28 @@ export default function Project() {
             .catch(error => console.error(error))
     }
 
-    function removeService(id: number) {
+    function removeService(id: string, cost: number) {
+        const services_updated = project?.services.filter(service => service.id !== id)
+        const project_updated = project
 
+        if (project_updated && services_updated) {
+            project_updated.services = services_updated
+            project_updated.spent = project_updated.spent - Number(cost)
+
+            fetch(`http://localhost:5000/projects/${project_updated.id}`, {
+                method: "PATCH",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(project_updated)
+            }).then(response => response.json())
+                .then(() => {
+                    setProject(project_updated)
+                    setServices(services_updated)
+                    setMessage({ id: Date.now(), type: "success", text: "Service removed." })
+                })
+                .catch(error => console.log(error))
+        }
     }
 
     return (
