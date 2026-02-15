@@ -8,8 +8,21 @@
         "id": 2,
         "name": "Development"
       },
-      "spent": 0,
-      "services": []
+      "spent": 1500,
+      "services": [
+        {
+          "name": "servico",
+          "description": "primeiro servico",
+          "cost": "1000",
+          "id": "e1b70c9e-301e-487f-9fce-439c6e61f930"
+        },
+        {
+          "name": "segundo servico",
+          "description": "aaa",
+          "cost": "500",
+          "id": "87d7c817-e9ea-4259-9502-b87aa92747c2"
+        }
+      ]
     }
   ],
   "categories": [

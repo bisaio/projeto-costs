@@ -2,10 +2,12 @@ import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { v4 as uuidv4 } from 'uuid'
 import { ProjectProps } from '../../interfaces/ProjectProps'
+import { ServiceProps } from '../../interfaces/ServiceProps'
 import Container from '../layout/Container'
 import Loading from '../layout/Loading'
 import Message from '../layout/Message'
 import ProjectForm from '../project/ProjectForm'
+import ServiceCard from '../service/ServiceCard'
 import ServiceForm from '../service/ServiceForm'
 import styles from './Project.module.css'
 
@@ -13,6 +15,7 @@ export default function Project() {
     const { id } = useParams()
 
     const [project, setProject] = useState<ProjectProps>()
+    const [services, setServices] = useState<ServiceProps[] | []>([])
     const [showProjectForm, setShowProjectForm] = useState(false)
     const [showServiceForm, setShowServiceForm] = useState(false)
     const [message, setMessage] = useState<{ id: number, type: string, text: string } | null>(null)
@@ -24,7 +27,10 @@ export default function Project() {
                 "Content-Type": "application/json"
             }
         }).then(response => response.json())
-            .then(data => setProject(data))
+            .then(data => {
+                setProject(data)
+                setServices(data.services);
+            })
             .catch(error => console.error(error))
     }, [id])
 
@@ -61,8 +67,11 @@ export default function Project() {
             },
             body: JSON.stringify(project)
         }).then(response => response.json())
-        .then(data => setProject(data))
-        .catch(error => console.error(error))
+            .then(data => {
+                setProject(data)
+                setShowServiceForm(false)
+            })
+            .catch(error => console.error(error))
     }
 
     function editPost(project: ProjectProps) {
@@ -84,6 +93,10 @@ export default function Project() {
                 setMessage({ id: Date.now(), type: "success", text: "Project updated." })
             })
             .catch(error => console.error(error))
+    }
+
+    function removeService(id: number) {
+
     }
 
     return (
@@ -124,7 +137,8 @@ export default function Project() {
                         </div>
                         <h2>Services</h2>
                         <Container customClass="start">
-                            <p>services</p>
+                            {services.length > 0 && (services.map(service => <ServiceCard id={service.id} key={service.id} name={service.name} description={service.description} cost={service.cost} handleRemove={removeService} />))}
+                            {services.length === 0 && (<p>This project has no services.</p>)}
                         </Container>
                     </Container>
                 </div>
